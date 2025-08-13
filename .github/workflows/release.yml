@@ -10,19 +10,18 @@ permissions:
 
 jobs:
   check-tag:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     outputs:
       tag: ${{ steps.tag.outputs.tag }}
       should-release: ${{ steps.tag_check.outputs.should-release }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Setup rust
-        uses: actions-rs/toolchain@v1
         with:
-          toolchain: stable
-          override: true
+          submodules: recursive
+
+      - name: Setup dependencies
+        uses: ./.github/actions/setup
 
       - name: Init submodules (excluding toolchain sources)
         run: |
@@ -47,31 +46,16 @@ jobs:
   build:
     needs: check-tag
     if: needs.check-tag.outputs.should-release == 'true'
-    strategy:
-      fail-fast: false
-      matrix:
-        include:
-          - os: ubuntu-latest
-            name: x86_64 Linux
-          - os: macos-14
-            name: arm64 macOS
-    runs-on: ${{ matrix.os }}
+    runs-on: self-hosted
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Setup rust
-        uses: actions-rs/toolchain@v1
         with:
-          toolchain: stable
-          override: true
+          submodules: recursive
 
-      - name: Setup other build tools
-        if: runner.os == 'macOS'
-        run: |
-          brew update
-          brew install zstd || true
+      - name: Setup dependencies
+        uses: ./.github/actions/setup
 
       - name: Initialize all submodules for building tc
         run: |
@@ -91,14 +75,14 @@ jobs:
       - name: Upload artifact for release
         uses: actions/upload-artifact@v4
         with:
-          name: toolchain-${{ matrix.name }}
+          name: toolchain-self-hosted
           path: ${{ steps.bootstrap.outputs.filename }}
           retention-days: 1
 
   release:
     needs: [check-tag, build]
     if: needs.check-tag.outputs.should-release == 'true'
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Download all artifacts
         uses: actions/download-artifact@v4
