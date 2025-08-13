@@ -28,7 +28,7 @@ jobs:
         run: |
           git submodule update --init --recursive -- ':!toolchain/src/*'
           git submodule status
-
+ 
       - name: Generate tag from submodules
         id: tag
         run: |
