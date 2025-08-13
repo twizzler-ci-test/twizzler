@@ -21,10 +21,8 @@ jobs:
           fetch-depth: 0
           submodules: false
 
-      - name: install rust
-        uses: actions-rs/toolchain@v1
-        with:
-          toolchain: nightly
+      - name: Setup dependencies
+        uses: ./.github/actions/setup
 
       - name: Init submodules (excluding toolchain sources)
         run: |
