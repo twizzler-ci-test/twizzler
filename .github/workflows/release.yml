@@ -18,10 +18,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           submodules: recursive
 
-      - name: Setup dependencies
-        uses: ./.github/actions/setup
+      - name: install rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: nightly
 
       - name: Init submodules (excluding toolchain sources)
         run: |
@@ -52,6 +55,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
+          fetch-depth: 0
           submodules: recursive
 
       - name: Setup dependencies
