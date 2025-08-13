@@ -5,6 +5,13 @@ on:
     # branches:
     #   - main
 
+env:
+  CARGO_TERM_COLOR: always
+  LLVM_CONFIG_PATH: llvm-config-18
+  CC: clang-18
+  CXX: clang++-18
+  LD: clang++-18
+
 permissions:
   contents: write
 
