@@ -75,7 +75,7 @@ jobs:
         id: bootstrap
         shell: bash
         run: |
-          cargo xtask toolchain bootstrap --skip-prune --compress
+          RUST_BACKTRACE=1 cargo xtask toolchain bootstrap --compress
           os=$(uname)
           arch=$(uname -m)
           base_tag="${{ needs.check-tag.outputs.tag }}"
