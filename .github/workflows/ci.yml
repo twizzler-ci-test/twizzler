@@ -15,17 +15,25 @@ env:
 
 jobs:
   release:
+    if: github.event_name == 'asdf'
     uses: ./.github/workflows/release.yml
     permissions:
       contents: write
     secrets: inherit
 
-  build-and-test:
+  build-and-test-pr:
+    if: github.event_name == 'push'
+    uses: ./.github/workflows/build-and-test.yml
+    secrets: inherit
+
+  build-and-test-main:
+    if: github.event_name == 'asdf'
     needs: release
     uses: ./.github/workflows/build-and-test.yml
     secrets: inherit
 
   # docs:
-  #   needs: build-and-test
+  #   if: github.event_name == 'asdf'
+  #   needs: build-and-test-main
   #   uses: ./.github/workflows/docs.yml
   #   secrets: inherit

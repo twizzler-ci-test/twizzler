@@ -44,3 +44,12 @@ jobs:
       # aarch64 is compiled for QEMU virt, builds in debug mode
       - name: Build aarch64
         run: cargo +nightly build-all -a aarch64 -m virt
+      # - name: Install mdbook
+      #   run: |
+      #     mkdir mdbook
+      #     curl -Lf https://github.com/rust-lang/mdBook/releases/download/v0.4.13/mdbook-v0.4.13-x86_64-unknown-linux-gnu.tar.gz | tar -xz --directory=./mdbook
+      #     echo `pwd`/mdbook >> $GITHUB_PATH
+      # - name: Build Docs
+      #   run: cargo +nightly doc-all
+      # - name: Build Book
+      #   run: cd doc && mdbook build
