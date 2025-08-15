@@ -1,10 +1,9 @@
 name: Build and Test
 
 on:
-workflow_run:
-  workflows: ["Release"] # must match the Release workflow's 'name'
-  types: [completed]
-  # branches: [main]
+  workflow_run:
+    workflows: ["Release"] # must match the Release workflow's 'name'
+    types: [completed]
   # push:
   #   branches: [ main ]
   # pull_request:
