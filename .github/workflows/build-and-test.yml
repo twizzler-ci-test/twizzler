@@ -5,7 +5,7 @@ on:
     workflows: ["Release"]
     types:
       - completed
-  # push:
+  push:
   #   branches: [ main ]
   # pull_request:
   #   branches: [ main ]
