@@ -1,10 +1,14 @@
 name: Build and Test
 
 on:
-  push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+  workflow_run:
+    workflows: ["Release"]
+    types:
+      - completed
+  # push:
+  #   branches: [ main ]
+  # pull_request:
+  #   branches: [ main ]
 
 env:
   CARGO_TERM_COLOR: always
@@ -30,7 +34,7 @@ jobs:
     - id: setup
       uses: ./.github/actions/setup
     - name: Bootstrap Toolchain
-      run: cargo +nightly bootstrap
+      run: cargo +nightly toolchain pull
     - name: Build x86_64
       run: cargo +nightly build-all
     - name: Test x86_64 Debug

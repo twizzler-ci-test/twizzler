@@ -2,8 +2,8 @@ name: Release
 
 on:
   push:
-    # branches:
-    #   - main
+    branches:
+      # - main
 
 env:
   CARGO_TERM_COLOR: always
@@ -55,7 +55,11 @@ jobs:
   build:
     needs: check-tag
     if: needs.check-tag.outputs.should-release == 'true'
-    runs-on: self-hosted
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      matrix:
+        # runner: [self-hosted, macos-latest]
+        runner: [self-hosted]
 
     steps:
       - name: Checkout
@@ -85,7 +89,7 @@ jobs:
       - name: Upload artifact for release
         uses: actions/upload-artifact@v4
         with:
-          name: toolchain-self-hosted
+          name: toolchain-${{ matrix.runner }}
           path: ${{ steps.bootstrap.outputs.filename }}
           retention-days: 1
 
