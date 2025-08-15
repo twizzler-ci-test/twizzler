@@ -27,11 +27,18 @@ jobs:
           rm -rf ./* || true
           rm -rf ./.??* || true
           ls -la
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
-          submodules: recursive
-      - id: setup
+          fetch-depth: 0
+          submodules: false
+
+      - name: Setup dependencies
         uses: ./.github/actions/setup
+
+      - name: Init submodules (excluding toolchain sources)
+        run: |
+          git submodule update --init --recursive -- ':!toolchain/src/*'
       - name: Bootstrap Toolchain
         run: cargo +nightly toolchain pull
       - name: Build x86_64
