@@ -1,8 +1,7 @@
 name: Docs
 
 on:
-  push:
-    branches: [ main ]
+  workflow_call:
 
 env:
   CARGO_TERM_COLOR: always
@@ -42,7 +41,7 @@ jobs:
         curl -Lf https://github.com/rust-lang/mdBook/releases/download/v0.4.13/mdbook-v0.4.13-x86_64-unknown-linux-gnu.tar.gz | tar -xz --directory=./mdbook
         echo `pwd`/mdbook >> $GITHUB_PATH
     - name: Bootstrap Toolchain
-      run: cargo +nightly bootstrap
+      run: cargo +nightly toolchain pull
     - name: Build
       run: cargo +nightly doc-all
     - name: Copy
